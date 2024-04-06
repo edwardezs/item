@@ -1,0 +1,49 @@
+version: '3.8'
+
+x-common-env: &common-env
+  PG_PASS: ${PG_PASS}
+  PG_USER: ${PG_USER}
+  PG_DB: ${PG_DB}
+  PG_HOST: "postgres"
+  PG_PORT: ${PG_PORT}
+  PG_MAX_CONN: "10"
+  SERVER_PORT: ${SERVER_PORT}
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: deploy/dockerfiles/app/Dockerfile
+    environment:
+      <<: *common-env
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+
+  migrations:
+    build:
+      context: .
+      dockerfile: deploy/dockerfiles/migrations/Dockerfile
+    environment:
+      <<: *common-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_DB: ${PG_DB}
+    healthcheck:
+      test: pg_isready --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - ${PG_PORT}:5432
