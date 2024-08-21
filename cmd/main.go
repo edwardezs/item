@@ -1,11 +1,11 @@
 package main
 
 import (
-	"todo/internal/config"
-	"todo/internal/handlers"
-	"todo/internal/repo"
-	"todo/internal/server"
-	"todo/internal/service"
+	"items/internal/config"
+	"items/internal/handlers"
+	"items/internal/repo"
+	"items/internal/server"
+	"items/internal/service"
 
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"

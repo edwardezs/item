@@ -1,4 +1,5 @@
 -- +goose Up
+-- +goose StatementBegin
 CREATE TABLE items
 (
     id              SERIAL PRIMARY KEY,
@@ -13,6 +14,10 @@ INSERT INTO items (title, description, done) VALUES
     ('Do laundry', 'Wash, dry, and fold the clothes', FALSE), 
     ('Clean the room', 'Vacuum and dust the living room', FALSE), 
     ('Call mom', 'Call mom to catch up', FALSE);
+-- +goose StatementBegin
+
 
 -- +goose Down
-DROP TABLE items;
+-- +goose StatementBegin
+DROP TABLE IF EXISTS items;
+-- +goose StatementEnd

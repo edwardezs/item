@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"github.com/gin-gonic/gin"
+	"items/internal/model"
 	"net/http"
 	"strconv"
-	"todo/internal/model"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) createItem(c *gin.Context) {
@@ -36,7 +37,7 @@ func (h *Handler) getAllItems(c *gin.Context) {
 func (h *Handler) getItemById(c *gin.Context) {
 	itemId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
+		newErrorResponse(c, http.StatusBadRequest, "invalid item id param")
 		return
 	}
 
@@ -52,7 +53,7 @@ func (h *Handler) getItemById(c *gin.Context) {
 func (h *Handler) deleteItem(c *gin.Context) {
 	itemId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
+		newErrorResponse(c, http.StatusBadRequest, "invalid item id param")
 		return
 	}
 

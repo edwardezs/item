@@ -1,8 +1,9 @@
 package repo
 
 import (
+	"items/internal/model"
+
 	"github.com/jmoiron/sqlx"
-	"todo/internal/model"
 )
 
 type Item interface {
