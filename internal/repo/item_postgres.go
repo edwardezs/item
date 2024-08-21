@@ -36,7 +36,7 @@ func (r *ItemPostgres) GetAll() ([]model.Item, error) {
 func (r *ItemPostgres) GetById(itemId int) (model.Item, error) {
 	var item model.Item
 	if err := r.db.Get(&item, selectItemQuery, itemId); err != nil {
-		return item, err
+		return model.Item{}, err
 	}
 
 	return item, nil

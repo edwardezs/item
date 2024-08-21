@@ -13,18 +13,27 @@ type Item interface {
 	Delete(itemId int) error
 }
 
+type User interface {
+	Create(user model.User) (int, error)
+	GetAll() ([]model.User, error)
+	GetById(userId int) (model.User, error)
+	Delete(userId int) error
+}
+
 type Status interface {
 	GetAll() ([]model.Status, error)
 }
 
 type Repository struct {
 	Item
+	User
 	Status
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Item:   NewItemPostgres(db),
+		User:   NewUserPostgres(db),
 		Status: NewStatusPostgres(db),
 	}
 }
