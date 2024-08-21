@@ -6,6 +6,7 @@ x-common-env: &common-env
   PG_DB: ${PG_DB}
   PG_HOST: "postgres"
   PG_PORT: ${PG_PORT}
+  PG_SSLMODE: ${PG_SSLMODE}
   PG_MAX_CONN: "10"
   SERVER_PORT: ${SERVER_PORT}
 
