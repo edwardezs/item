@@ -8,19 +8,14 @@ run:
 
 .PHONY: up
 up:
-	docker compose up -d --build
+	docker compose up -d
 
 .PHONY: down
 down:
 	docker compose down
 
-.PHONY: update
+.PHONY: precommit
 update:
 	go mod tidy
 	go mod vendor
 	go fmt ./...
-	go vet ./...
-
-.PHONY: test
-test:
-	go test -v ./...

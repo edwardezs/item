@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"test/internal/model"
+	"test/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,23 +12,23 @@ import (
 func (h *Handler) createUser(c *gin.Context) {
 	var input model.User
 	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	_, err := h.services.User.Create(input)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusOK, utils.StatusResponse{Status: "user created"})
 }
 
 func (h *Handler) getAllUsers(c *gin.Context) {
 	users, err := h.services.User.GetAll()
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -37,13 +38,13 @@ func (h *Handler) getAllUsers(c *gin.Context) {
 func (h *Handler) getUserById(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid user id param")
+		utils.NewErrorResponse(c, http.StatusBadRequest, "invalid user id param")
 		return
 	}
 
 	user, err := h.services.User.GetById(userId)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -53,15 +54,15 @@ func (h *Handler) getUserById(c *gin.Context) {
 func (h *Handler) deleteUser(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid user id param")
+		utils.NewErrorResponse(c, http.StatusBadRequest, "invalid user id param")
 		return
 	}
 
 	err = h.services.User.Delete(userId)
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{"ok"})
+	c.JSON(http.StatusOK, utils.StatusResponse{Status: "user deleted"})
 }
