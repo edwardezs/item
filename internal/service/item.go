@@ -1,8 +1,8 @@
 package service
 
 import (
-	"items/internal/model"
-	"items/internal/repo"
+	"test/internal/model"
+	"test/internal/repo"
 )
 
 type ItemService struct {

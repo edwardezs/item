@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"items/internal/service"
+	"test/internal/service"
 
 	"github.com/gin-gonic/gin"
 )

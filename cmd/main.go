@@ -1,11 +1,11 @@
 package main
 
 import (
-	"items/internal/config"
-	"items/internal/handlers"
-	"items/internal/repo"
-	"items/internal/server"
-	"items/internal/service"
+	"test/internal/config"
+	"test/internal/handlers"
+	"test/internal/repo"
+	"test/internal/server"
+	"test/internal/service"
 
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"

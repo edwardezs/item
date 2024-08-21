@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"items/internal/model"
 	"net/http"
 	"strconv"
+	"test/internal/model"
 
 	"github.com/gin-gonic/gin"
 )

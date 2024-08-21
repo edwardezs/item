@@ -1,7 +1,7 @@
 package repo
 
 import (
-	"items/internal/model"
+	"test/internal/model"
 
 	"github.com/jmoiron/sqlx"
 )
