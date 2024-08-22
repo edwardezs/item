@@ -33,5 +33,5 @@ func (h *Handler) changeAPIStatus(ctx *gin.Context) {
 		return
 	}
 
-	resputils.SuccessResponse(ctx, fmt.Sprintf("api status changed to %t", newStatus))
+	resputils.SuccessResponse(ctx, fmt.Sprintf("api read-only mode is %t", newStatus))
 }

@@ -37,5 +37,5 @@ const selectStatusQuery = `
 `
 
 const changeStatusQuery = `
-	UPDATE table_lock_status SET read_only = $1 RETURNING $1;
+	UPDATE table_lock_status SET read_only = $1::boolean RETURNING $1;
 `
