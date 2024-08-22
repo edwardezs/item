@@ -22,3 +22,13 @@ func (r *StatusPostgres) GetAll() ([]model.Status, error) {
 
 	return tableStatuses, nil
 }
+
+func (r *StatusPostgres) ChangeAll(status bool) (bool, error) {
+	var newStatus bool
+	err := r.db.QueryRow(changeStatusQuery, status).Scan(&newStatus)
+	if err != nil {
+		return false, err
+	}
+
+	return newStatus, nil
+}

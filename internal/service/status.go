@@ -16,3 +16,7 @@ func NewStatusService(repo repo.Status) *StatusService {
 func (s *StatusService) GetStatus() ([]model.Status, error) {
 	return s.repo.GetAll()
 }
+
+func (s *StatusService) ChangeStatus(status bool) (bool, error) {
+	return s.repo.ChangeAll(status)
+}

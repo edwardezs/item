@@ -42,7 +42,10 @@ func (r *ItemPostgres) GetById(itemId int) (model.Item, error) {
 	return item, nil
 }
 
-func (r *ItemPostgres) Delete(itemId int) error {
-	_, err := r.db.Exec(deleteItemQuery, itemId)
-	return err
+func (r *ItemPostgres) Delete(itemId int) (string, error) {
+	var title string
+	if err := r.db.QueryRow(deleteItemQuery, itemId).Scan(&title); err != nil {
+		return "", err
+	}
+	return title, nil
 }

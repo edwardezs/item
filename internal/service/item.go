@@ -25,6 +25,6 @@ func (s *ItemService) GetById(itemId int) (model.Item, error) {
 	return s.repo.GetById(itemId)
 }
 
-func (s *ItemService) Delete(itemId int) error {
+func (s *ItemService) Delete(itemId int) (string, error) {
 	return s.repo.Delete(itemId)
 }

@@ -25,6 +25,6 @@ func (s *UserService) GetById(userId int) (model.User, error) {
 	return s.repo.GetById(userId)
 }
 
-func (s *UserService) Delete(userId int) error {
+func (s *UserService) Delete(userId int) (string, error) {
 	return s.repo.Delete(userId)
 }

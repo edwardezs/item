@@ -1,68 +1,69 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"test/internal/model"
-	"test/internal/utils"
+	resputils "test/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) createUser(c *gin.Context) {
+func (h *Handler) createUser(ctx *gin.Context) {
 	var input model.User
-	if err := c.BindJSON(&input); err != nil {
-		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+	if err := ctx.BindJSON(&input); err != nil {
+		resputils.ErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	_, err := h.services.User.Create(input)
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		resputils.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, utils.StatusResponse{Status: "user created"})
+	resputils.SuccessResponse(ctx, fmt.Sprintf("user %s created", input.Name))
 }
 
-func (h *Handler) getAllUsers(c *gin.Context) {
+func (h *Handler) getAllUsers(ctx *gin.Context) {
 	users, err := h.services.User.GetAll()
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		resputils.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, users)
+	resputils.SuccessResponse(ctx, users)
 }
 
-func (h *Handler) getUserById(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) getUserById(ctx *gin.Context) {
+	userId, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusBadRequest, "invalid user id param")
+		resputils.ErrorResponse(ctx, http.StatusBadRequest, "invalid user id param")
 		return
 	}
 
 	user, err := h.services.User.GetById(userId)
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		resputils.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	resputils.SuccessResponse(ctx, user)
 }
 
-func (h *Handler) deleteUser(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) deleteUser(ctx *gin.Context) {
+	userId, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusBadRequest, "invalid user id param")
+		resputils.ErrorResponse(ctx, http.StatusBadRequest, "invalid user id param")
 		return
 	}
 
-	err = h.services.User.Delete(userId)
+	name, err := h.services.User.Delete(userId)
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		resputils.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, utils.StatusResponse{Status: "user deleted"})
+	resputils.SuccessResponse(ctx, fmt.Sprintf("user %s deleted", name))
 }

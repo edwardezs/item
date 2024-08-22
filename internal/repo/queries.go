@@ -13,7 +13,7 @@ const createItemQuery = `
 `
 
 const deleteItemQuery = `
-    DELETE FROM items WHERE id = $1;
+    DELETE FROM items WHERE id = $1 RETURNING title;
 `
 
 const selectUsersQuery = `
@@ -29,9 +29,13 @@ const createUserQuery = `
 `
 
 const deleteUserQuery = `
-    DELETE FROM users WHERE id = $1;
+    DELETE FROM users WHERE id = $1 RETURNING name;
 `
 
 const selectStatusQuery = `
 	SELECT table_name, read_only FROM table_lock_status;
+`
+
+const changeStatusQuery = `
+	UPDATE table_lock_status SET read_only = $1 RETURNING $1;
 `

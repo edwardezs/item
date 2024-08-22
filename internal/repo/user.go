@@ -42,7 +42,11 @@ func (r *UserPostgres) GetById(userId int) (model.User, error) {
 	return user, nil
 }
 
-func (r *UserPostgres) Delete(userId int) error {
-	_, err := r.db.Exec(deleteUserQuery, userId)
-	return err
+func (r *UserPostgres) Delete(userId int) (string, error) {
+	var name string
+	if err := r.db.QueryRow(deleteUserQuery, userId).Scan(&name); err != nil {
+		return "", err
+	}
+
+	return name, nil
 }

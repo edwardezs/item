@@ -1,68 +1,69 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"test/internal/model"
-	"test/internal/utils"
+	resputils "test/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) createItem(c *gin.Context) {
+func (h *Handler) createItem(ctx *gin.Context) {
 	var input model.Item
-	if err := c.BindJSON(&input); err != nil {
-		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+	if err := ctx.BindJSON(&input); err != nil {
+		resputils.ErrorResponse(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	_, err := h.services.Item.Create(input)
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		resputils.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, utils.StatusResponse{Status: "item created"})
+	resputils.SuccessResponse(ctx, fmt.Sprintf("item %s created", input.Title))
 }
 
-func (h *Handler) getAllItems(c *gin.Context) {
+func (h *Handler) getAllItems(ctx *gin.Context) {
 	items, err := h.services.Item.GetAll()
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		resputils.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, items)
+	resputils.SuccessResponse(ctx, items)
 }
 
-func (h *Handler) getItemById(c *gin.Context) {
-	itemId, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) getItemById(ctx *gin.Context) {
+	itemId, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusBadRequest, "invalid item id param")
+		resputils.ErrorResponse(ctx, http.StatusBadRequest, "invalid item id param")
 		return
 	}
 
 	item, err := h.services.Item.GetById(itemId)
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		resputils.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, item)
+	resputils.SuccessResponse(ctx, item)
 }
 
-func (h *Handler) deleteItem(c *gin.Context) {
-	itemId, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) deleteItem(ctx *gin.Context) {
+	itemId, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusBadRequest, "invalid item id param")
+		resputils.ErrorResponse(ctx, http.StatusBadRequest, "invalid item id param")
 		return
 	}
 
-	err = h.services.Item.Delete(itemId)
+	title, err := h.services.Item.Delete(itemId)
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		resputils.ErrorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, utils.StatusResponse{Status: "item deleted"})
+	resputils.SuccessResponse(ctx, fmt.Sprintf("item with %s deleted", title))
 }
