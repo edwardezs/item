@@ -12,12 +12,12 @@ type response struct {
 	StatusCode int `json:"status_code"`
 }
 
-func ErrorResponse(ctx *gin.Context, statusCode int, message any) {
+func Error(ctx *gin.Context, statusCode int, message any) {
 	logrus.Error(message)
 	ctx.AbortWithStatusJSON(statusCode, response{Response: message, StatusCode: statusCode})
 }
 
-func SuccessResponse(ctx *gin.Context, message any) {
+func Success(ctx *gin.Context, message any) {
 	logrus.Info(message)
 	ctx.JSON(http.StatusOK, response{Response: message, StatusCode: http.StatusOK})
 }

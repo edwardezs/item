@@ -1038,7 +1038,7 @@ func (cn *conn) recvMessage(r *readBuf) (byte, error) {
 }
 
 // recv receives a message from the backend, but if an error happened while
-// reading the message or the received message was an ErrorResponse, it panics.
+// reading the message or the received message was an Error, it panics.
 // NoticeResponses are ignored.  This function should generally be used only
 // during the startup sequence.
 func (cn *conn) recv() (t byte, r *readBuf) {
@@ -1094,7 +1094,7 @@ func (cn *conn) recv1Buf(r *readBuf) byte {
 
 // recv1 receives a message from the backend, panicking if an error occurs
 // while attempting to read it.  All asynchronous messages are ignored, with
-// the exception of ErrorResponse.
+// the exception of Error.
 func (cn *conn) recv1() (t byte, r *readBuf) {
 	r = &readBuf{}
 	t = cn.recv1Buf(r)

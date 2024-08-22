@@ -44,5 +44,5 @@ func main() {
 	if err := srv.Run(ctx); err != nil {
 		logrus.Fatal(err)
 	}
-	logrus.Info(appName+" gracefully finished")
+	logrus.Info(appName + " gracefully finished")
 }
