@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"test/internal/config"
 	"test/internal/handlers"
 	"test/internal/repo"
@@ -11,7 +12,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+const appName = "test"
+
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
 	cfg, err := config.Get()
@@ -36,7 +41,8 @@ func main() {
 	handlers := handlers.NewHandler(service)
 
 	srv := server.New(cfg.ServerPort, handlers.InitRoutes())
-	if err := srv.Run(); err != nil {
+	if err := srv.Run(ctx); err != nil {
 		logrus.Fatal(err)
 	}
+	logrus.Info(appName+" gracefully finished")
 }
