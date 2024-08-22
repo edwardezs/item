@@ -5,32 +5,30 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-
-	"test/internal/utils"
 )
 
 func (h *Handler) getAPIStatus(ctx *gin.Context) {
 	status, err := h.services.Status.GetStatus()
 	if err != nil {
-		utils.Error(ctx, http.StatusInternalServerError, err.Error())
+		errorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	utils.Success(ctx, status)
+	successResponse(ctx, status)
 }
 
 func (h *Handler) changeAPIStatus(ctx *gin.Context) {
-	status, err := utils.ParceReadOnly(ctx)
+	status, err := parceReadOnly(ctx)
 	if err != nil {
-		utils.Error(ctx, http.StatusBadRequest, "invalid api status param")
+		errorResponse(ctx, http.StatusBadRequest, "invalid api status param")
 		return
 	}
 
 	newStatus, err := h.services.Status.ChangeStatus(status)
 	if err != nil {
-		utils.Error(ctx, http.StatusInternalServerError, err.Error())
+		errorResponse(ctx, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	utils.Success(ctx, fmt.Sprintf("api read-only mode is %t", newStatus))
+	successResponse(ctx, fmt.Sprintf("api read-only mode is %t", newStatus))
 }
