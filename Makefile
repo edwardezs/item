@@ -1,11 +1,3 @@
-.PHONY: build
-build:
-	go build -o bin/app cmd/main.go
-
-.PHONY: run
-run:
-	go run cmd/main.go
-
 .PHONY: up
 up:
 	docker compose up -d

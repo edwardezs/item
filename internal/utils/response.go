@@ -8,16 +8,16 @@ import (
 )
 
 type response struct {
-	Status any `json:"status"`
-	Code   int `json:"code"`
+	Response   any `json:"response"`
+	StatusCode int `json:"status_code"`
 }
 
-func ErrorResponse(ctx *gin.Context, statusCode int, message string) {
+func ErrorResponse(ctx *gin.Context, statusCode int, message any) {
 	logrus.Error(message)
-	ctx.AbortWithStatusJSON(statusCode, response{Status: message, Code: statusCode})
+	ctx.AbortWithStatusJSON(statusCode, response{Response: message, StatusCode: statusCode})
 }
 
-func SuccessResponse(ctx *gin.Context, status any) {
-	logrus.Info(status)
-	ctx.JSON(http.StatusOK, response{Status: status, Code: http.StatusOK})
+func SuccessResponse(ctx *gin.Context, message any) {
+	logrus.Info(message)
+	ctx.JSON(http.StatusOK, response{Response: message, StatusCode: http.StatusOK})
 }

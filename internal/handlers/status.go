@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -32,5 +33,5 @@ func (h *Handler) changeAPIStatus(ctx *gin.Context) {
 		return
 	}
 
-	resputils.SuccessResponse(ctx, newStatus)
+	resputils.SuccessResponse(ctx, fmt.Sprintf("api status changed to %t", newStatus))
 }
